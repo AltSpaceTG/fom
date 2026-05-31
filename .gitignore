@@ -41,8 +41,9 @@ Thumbs.db
 local.properties
 *.local
 
-# AI
+# AI assistant — local plan/notes, never shared.
 .claude
+.claude/
 
 # Publishing: keep credential-bearing files out of git.
 # gradle.properties.example (placeholders) is committed; real secrets are not.
