@@ -1,0 +1,133 @@
+site_name: FOM
+site_description: A JVM library for scheduling long-lived processes organised as a dependency graph, with idempotent restart from an append-only log.
+site_author: FOM contributors
+copyright: Licensed under the Apache License 2.0.
+
+# repo_url / edit_uri are intentionally unset until the project has a public repository.
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+    - search.highlight
+    - search.suggest
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - getting-started/installation.md
+      - getting-started/quickstart.md
+      - getting-started/first-graph.md
+  - Concepts:
+      - concepts/index.md
+      - concepts/process-lifecycle.md
+      - concepts/sid-and-clock.md
+      - concepts/the-log.md
+      - concepts/graph-and-routing.md
+      - concepts/reactive-cascade.md
+      - concepts/triggers-and-watchers.md
+      - concepts/snapshots.md
+      - concepts/graph-swap.md
+      - concepts/idempotent-restart.md
+  - Guides:
+      - guides/configuration.md
+      - guides/serialization.md
+      - guides/persistence-backends.md
+      - guides/observability.md
+      - guides/multi-node.md
+      - guides/multi-tenancy.md
+      - guides/kotlin-dsl.md
+      - guides/dependency-injection.md
+      - guides/cli.md
+      - guides/testing.md
+      - guides/publishing.md
+  - Reference:
+      - reference/modules.md
+      - reference/log-events.md
+      - reference/exceptions.md
+  - Security: security.md
+  - FAQ: faq.md
+  - Русский:
+      - ru/index.md
+      - Начало работы:
+          - ru/getting-started/installation.md
+          - ru/getting-started/quickstart.md
+          - ru/getting-started/first-graph.md
+      - Концепции:
+          - ru/concepts/index.md
+          - ru/concepts/process-lifecycle.md
+          - ru/concepts/sid-and-clock.md
+          - ru/concepts/the-log.md
+          - ru/concepts/graph-and-routing.md
+          - ru/concepts/reactive-cascade.md
+          - ru/concepts/triggers-and-watchers.md
+          - ru/concepts/snapshots.md
+          - ru/concepts/graph-swap.md
+          - ru/concepts/idempotent-restart.md
+      - Руководства:
+          - ru/guides/configuration.md
+          - ru/guides/serialization.md
+          - ru/guides/persistence-backends.md
+          - ru/guides/observability.md
+          - ru/guides/multi-node.md
+          - ru/guides/multi-tenancy.md
+          - ru/guides/kotlin-dsl.md
+          - ru/guides/dependency-injection.md
+          - ru/guides/cli.md
+          - ru/guides/testing.md
+          - ru/guides/publishing.md
+      - Справочник:
+          - ru/reference/modules.md
+          - ru/reference/log-events.md
+          - ru/reference/exceptions.md
+      - Безопасность: ru/security.md
+      - FAQ: ru/faq.md

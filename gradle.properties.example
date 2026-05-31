@@ -1,0 +1,23 @@
+# Example publishing credentials for Maven Central.
+#
+# DO NOT put real values here and DO NOT commit them. Copy the relevant lines
+# into your USER gradle properties instead — ~/.gradle/gradle.properties —
+# which lives outside the repo, or pass them as -P flags / ORG_GRADLE_PROJECT_*
+# environment variables in CI.
+#
+# See docs/guides/publishing.md for the full walkthrough.
+
+# ── Central Portal token (Account -> Generate User Token) ──
+mavenCentralUsername=CENTRAL_PORTAL_TOKEN_USERNAME
+mavenCentralPassword=CENTRAL_PORTAL_TOKEN_PASSWORD
+
+# ── PGP signing key (required by Central) ──
+# Export an ASCII-armored secret key and inline it (escape newlines as \n):
+#   gpg --armor --export-secret-keys <KEY_ID>
+signingInMemoryKey=-----BEGIN PGP PRIVATE KEY BLOCK-----\n...\n-----END PGP PRIVATE KEY BLOCK-----
+signingInMemoryKeyPassword=YOUR_KEY_PASSPHRASE
+
+# Alternatively the classic file-based signing trio:
+# signing.keyId=last 8 chars of the key id
+# signing.password=YOUR_KEY_PASSPHRASE
+# signing.secretKeyRingFile=/home/you/.gnupg/secring.gpg

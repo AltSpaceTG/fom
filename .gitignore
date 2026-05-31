@@ -1,0 +1,52 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Kotlin
+.kotlin/
+
+# IntelliJ IDEA — entirely IDE-local, not shared.
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local environment overrides
+local.properties
+*.local
+
+# AI
+.claude
+
+# Publishing: keep credential-bearing files out of git.
+# gradle.properties.example (placeholders) is committed; real secrets are not.
+/gradle.properties
+*.asc
+*.gpg
+secrets.properties
