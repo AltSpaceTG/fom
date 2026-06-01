@@ -191,7 +191,8 @@ To preview the site locally: `pip install mkdocs-material && mkdocs serve`.
 | 5 | `EngineObserver`, `introspect()`, `fom-micrometer`, `fom-otel`, `fom-test` | ✅ |
 | 6 | `fom-tenant`, `fom-log` CLI, `fom-log-maintenance`, hot-reload, `fom-jdbc` (Postgres) | ✅ |
 | 7 | In-place graph swap via `Engine.newGraph` diff | ✅ |
-| — | mkdocs site, Maven Central publishing, GitHub Actions, JMH benchmarks, native-image smoke, examples/ projects | Not yet |
+| — | MkDocs site (EN+RU), Maven Central publishing wiring, `examples/` projects, performance budget test | ✅ |
+| — | GitHub Actions CI, native-image smoke test | Not yet |
 
 ## License
 

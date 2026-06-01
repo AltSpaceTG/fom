@@ -61,10 +61,12 @@ subprojects {
     }
 
     // ───────────────── Maven Central publishing ─────────────────
-    // Applies to every module that produces a JVM library (Java or Kotlin).
+    // Applies to every module that produces a JVM library (Java or Kotlin),
+    // except the non-library `examples` module.
     plugins.withId("java") {
-        // 'application' modules still publish their library jar; that's fine.
-        configurePublishing(stagingDir)
+        if (project.path != ":examples") {
+            configurePublishing(stagingDir)
+        }
     }
 }
 
