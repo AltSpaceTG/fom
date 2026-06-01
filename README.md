@@ -191,8 +191,14 @@ To preview the site locally: `pip install mkdocs-material && mkdocs serve`.
 | 5 | `EngineObserver`, `introspect()`, `fom-micrometer`, `fom-otel`, `fom-test` | ✅ |
 | 6 | `fom-tenant`, `fom-log` CLI, `fom-log-maintenance`, hot-reload, `fom-jdbc` (Postgres) | ✅ |
 | 7 | In-place graph swap via `Engine.newGraph` diff | ✅ |
-| — | MkDocs site (EN+RU), Maven Central publishing wiring, `examples/` projects, performance budget test | ✅ |
-| — | GitHub Actions CI, native-image smoke test | Not yet |
+| — | Runnable [`examples/`](examples/README.md) (11 programs, run end-to-end) | ✅ |
+| — | Performance budget test (1000-node start < 5 s, query p99 < 5 ms) | ✅ |
+| — | Bilingual docs content (EN+RU) under [`docs/`](docs/index.md), links validated | ✅ |
+| — | `mkdocs build` of the docs site | ⏳ content ready; build not yet run |
+| — | Maven Central publishing wired (`./gradlew centralBundle`, signing, POMs) | ✅ wiring only |
+| — | Released to Maven Central | ❌ needs namespace verification + a release version |
+| — | GitHub Actions CI | ❌ not yet |
+| — | Native-image smoke test | ❌ not yet |
 
 ## License
 
