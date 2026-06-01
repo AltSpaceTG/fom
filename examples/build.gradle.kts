@@ -40,6 +40,7 @@ val examples = linkedMapOf(
     "furySerde" to "io.fom.examples.FurySerdeExample",
     "kotlinDsl" to "io.fom.examples.KotlinDslExampleKt",
     "multiNodePostgres" to "io.fom.examples.MultiNodePostgresExample",
+    "dbWatcher" to "io.fom.examples.DbWatcherExample",
 )
 
 examples.forEach { (taskName, mainClassName) ->

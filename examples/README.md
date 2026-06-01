@@ -27,24 +27,35 @@ Central.
 | `:examples:furySerde` | `FurySerdeExample` | Swapping in `FurySerDe` — the production-recommended serializer. |
 | `:examples:kotlinDsl` | `KotlinDslExample.kt` | The Kotlin `graph { }` DSL, a `SuspendingProcess`, and `queryAs<T>`. |
 | `:examples:multiNodePostgres` | `MultiNodePostgresExample` | Leader election across instances via the Postgres advisory-lock backend. **Needs a database** (see below). |
+| `:examples:dbWatcher` | `DbWatcherExample` | A `ScheduledWatcher` polls a **database** row and re-initialises a process when the value changes. **Needs a database** (see below). |
 
-## Running the Postgres example
+## Running the Postgres examples
 
-It needs a running Postgres. Spin up a throwaway one with Docker:
+`multiNodePostgres` and `dbWatcher` need a running Postgres. Spin up a
+throwaway one with Docker:
 
 ```bash
 docker run --rm -d -p 5432:5432 -e POSTGRES_PASSWORD=test \
   --name fom-pg postgres:16-alpine
 
+# leader election across instances:
 ./gradlew :examples:multiNodePostgres \
+  -PexampleArgs="jdbc:postgresql://localhost:5432/postgres postgres test"
+
+# re-init a process when a DB value changes:
+./gradlew :examples:dbWatcher \
   -PexampleArgs="jdbc:postgresql://localhost:5432/postgres postgres test"
 
 docker rm -f fom-pg
 ```
 
-You can also point it at any database via the `FOM_PG_URL` / `FOM_PG_USER` /
-`FOM_PG_PASSWORD` environment variables. With no URL it just prints these
-instructions and exits.
+You can also point them at any database via the `FOM_PG_URL` / `FOM_PG_USER` /
+`FOM_PG_PASSWORD` environment variables. With no URL they just print these
+instructions and exit.
+
+`dbWatcher` creates (and drops) a tiny `catalog_version` table; the watcher's
+`check` runs on the engine scheduler thread, so keep such polls to a quick
+indexed read (the example does a single `SELECT`).
 
 ## Notes
 
