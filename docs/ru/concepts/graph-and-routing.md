@@ -45,7 +45,39 @@ Graph g = new GraphBuilder()
 
 См. [Реактивный каскад](reactive-cascade.md) о реактивных и стабильных.
 
-## Маршрутизация запроса
+### Типизированные ссылки на процессы — `ProcessRef`
+
+Процесс идентифицируется по **имени** — именно эта строка сохраняется в логе
+(`Sid`, `LogInitialized`, …), поэтому долговечная идентичность — всегда имя.
+Чтобы не разбрасывать строковые литералы по `add(...)`, спискам зависимостей и
+`ctx.query(...)`, заведите по одной константе **`ProcessRef`** на процесс и
+передавайте её. У каждого API с именем есть перегрузка под `ProcessRef`, так что
+оба стиля совместимы:
+
+```java
+final class InventoryInit implements ProcessInitializer, ProcessLoader {
+    static final ProcessRef REF = ProcessRef.of("Inventory");
+    // …
+}
+
+new GraphBuilder()
+    .add(InventoryInit.REF, InventoryInit::new, InventoryInit::new)
+        .handles(GetStock.class)
+    .add(ProductsInit.REF, ProductsInit::new, ProductsInit::new,
+         InventoryInit.REF)          // зависимость по ссылке, не по строке
+    .build();
+
+// адресация процесса или зависимости:
+engine.queryProcess(InventoryInit.REF, msg);
+engine.trigger(InventoryInit.REF, signal);
+ctx.query(InventoryInit.REF, new GetStock(sku));   // внутри init/load/compute
+```
+
+`ProcessRef` — это исключительно compile-time удобство:
+`ProcessRef.of("Inventory")` оборачивает то же имя, что движок сохраняет, поэтому
+формат на диске не меняется, а переименование самой *константы* никогда не влияет
+на восстановление (влияет только смена строки). `Routable`-сообщение возвращает
+имя через `REF.name()`.
 
 `engine.query(msg)` разрешает целевой процесс в порядке приоритета:
 

@@ -286,6 +286,18 @@ public final class Engine implements AutoCloseable {
                 .orTimeout(timeout.toMillis(), TimeUnit.MILLISECONDS);
     }
 
+    /** {@link #queryProcess(String, Object)} keyed by a typed {@link ProcessRef}. */
+    public CompletionStage<Object> queryProcess(ProcessRef ref, Object q) {
+        Objects.requireNonNull(ref, "ref");
+        return queryProcess(ref.name(), q);
+    }
+
+    /** {@link #queryProcess(String, Object, Duration)} keyed by a typed {@link ProcessRef}. */
+    public CompletionStage<Object> queryProcess(ProcessRef ref, Object q, Duration timeout) {
+        Objects.requireNonNull(ref, "ref");
+        return queryProcess(ref.name(), q, timeout);
+    }
+
     public boolean trigger(String processName, Serializable value) {
         Objects.requireNonNull(processName, "processName");
         Objects.requireNonNull(value, "value");
@@ -300,6 +312,12 @@ public final class Engine implements AutoCloseable {
         persistTrigger(Map.of(processName, value));
         machine.handleTrigger(processName, new ReinitCause.Triggered(value));
         return true;
+    }
+
+    /** {@link #trigger(String, Serializable)} keyed by a typed {@link ProcessRef}. */
+    public boolean trigger(ProcessRef ref, Serializable value) {
+        Objects.requireNonNull(ref, "ref");
+        return trigger(ref.name(), value);
     }
 
     public boolean trigger(Map<String, Serializable> nameToValue) {

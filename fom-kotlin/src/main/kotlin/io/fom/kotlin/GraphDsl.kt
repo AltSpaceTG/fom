@@ -2,6 +2,7 @@ package io.fom.kotlin
 
 import io.fom.Graph
 import io.fom.GraphBuilder
+import io.fom.ProcessRef
 import io.fom.SerializableFunction
 import io.fom.SerializableSupplier
 import io.fom.api.ParamProcessInitializer
@@ -69,6 +70,23 @@ class GraphScope @PublishedApi internal constructor(
         )
         return NodeHandle(builder, name)
     }
+
+    /** [process] keyed by a typed [ProcessRef]; dependencies are refs too. */
+    fun process(
+        ref: ProcessRef,
+        initFactory: () -> ProcessInitializer,
+        loadFactory: () -> ProcessLoader,
+        dependsOn: List<ProcessRef> = emptyList(),
+    ): NodeHandle = process(ref.name(), initFactory, loadFactory, dependsOn.map { it.name() })
+
+    /** [processWithParam] keyed by a typed [ProcessRef]; dependencies are refs too. */
+    fun <P : Serializable> processWithParam(
+        ref: ProcessRef,
+        initFactory: () -> ParamProcessInitializer<P>,
+        loadFactory: () -> ParamProcessLoader<P>,
+        param: P,
+        dependsOn: List<ProcessRef> = emptyList(),
+    ): NodeHandle = processWithParam(ref.name(), initFactory, loadFactory, param, dependsOn.map { it.name() })
 
     inline fun <reified Q : Any> route(noinline resolver: (Q) -> String) {
         builder.route(Q::class.java, SerializableFunction @JvmSerializableLambda { resolver(it) })

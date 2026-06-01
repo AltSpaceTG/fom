@@ -44,4 +44,16 @@ public sealed interface Dependency extends Serializable permits Dependency.React
     static Dependency stable(String name) {
         return new Stable(name);
     }
+
+    /** Reactive dependency on the given {@link ProcessRef}. */
+    static Dependency reactive(ProcessRef ref) {
+        Objects.requireNonNull(ref, "ref");
+        return new Reactive(ref.name());
+    }
+
+    /** Stable dependency on the given {@link ProcessRef}. */
+    static Dependency stable(ProcessRef ref) {
+        Objects.requireNonNull(ref, "ref");
+        return new Stable(ref.name());
+    }
 }

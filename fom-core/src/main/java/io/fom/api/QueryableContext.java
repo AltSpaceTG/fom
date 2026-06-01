@@ -1,6 +1,9 @@
 package io.fom.api;
 
+import io.fom.ProcessRef;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -17,6 +20,12 @@ public interface QueryableContext extends ProcessContext {
      * synchronously with {@code QueryException("No such dependency: ...")}.
      */
     CompletionStage<Object> query(String dependencyName, Object query);
+
+    /** {@link #query(String, Object)} keyed by a typed {@link ProcessRef}. */
+    default CompletionStage<Object> query(ProcessRef dependency, Object query) {
+        Objects.requireNonNull(dependency, "dependency");
+        return query(dependency.name(), query);
+    }
 
     /** Names of all declared direct dependencies of the current process. */
     List<String> dependencies();

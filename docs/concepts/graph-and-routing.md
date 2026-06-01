@@ -45,6 +45,39 @@ Graph g = new GraphBuilder()
 
 See [Reactive cascade](reactive-cascade.md) for reactive vs stable.
 
+### Typed process references — `ProcessRef`
+
+A process is identified by its **name** — that string is what the log persists
+(`Sid`, `LogInitialized`, …), so the durable identity is always the name. To
+avoid scattering bare string literals across `add(...)`, dependency lists, and
+`ctx.query(...)`, define one **`ProcessRef`** constant per process and pass it
+instead. Every name-keyed API has a `ProcessRef` overload, so the two styles
+interoperate:
+
+```java
+final class InventoryInit implements ProcessInitializer, ProcessLoader {
+    static final ProcessRef REF = ProcessRef.of("Inventory");
+    // …
+}
+
+new GraphBuilder()
+    .add(InventoryInit.REF, InventoryInit::new, InventoryInit::new)
+        .handles(GetStock.class)
+    .add(ProductsInit.REF, ProductsInit::new, ProductsInit::new,
+         InventoryInit.REF)          // dependency by ref, not string
+    .build();
+
+// addressing a process or a dependency:
+engine.queryProcess(InventoryInit.REF, msg);
+engine.trigger(InventoryInit.REF, signal);
+ctx.query(InventoryInit.REF, new GetStock(sku));   // inside init/load/compute
+```
+
+`ProcessRef` is purely a compile-time convenience — `ProcessRef.of("Inventory")`
+wraps the same name the engine persists, so it does **not** change the on-disk
+format and renaming the *constant* never affects recovery (only changing the
+string would). A `Routable` message returns the name with `REF.name()`.
+
 ## Routing a query
 
 `engine.query(msg)` resolves the target process in priority order:

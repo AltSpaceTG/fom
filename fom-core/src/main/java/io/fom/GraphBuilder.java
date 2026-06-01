@@ -64,6 +64,31 @@ public final class GraphBuilder {
         return addInternal(name, initFactory, loadFactory, param, Arrays.asList(dependencies));
     }
 
+    // ───────────────── ProcessRef overloads ─────────────────
+    // Type-safe, refactor-friendly equivalents of the String-named methods.
+    // The durable identity is still the underlying name; these only spare the
+    // caller from bare string literals.
+
+    /** {@link #add(String, SerializableSupplier, SerializableSupplier, String...)} keyed by {@link ProcessRef}. */
+    public GraphBuilder add(ProcessRef ref,
+                            SerializableSupplier<? extends ProcessInitializer> initFactory,
+                            SerializableSupplier<? extends ProcessLoader> loadFactory,
+                            ProcessRef... dependencies) {
+        Objects.requireNonNull(ref, "ref");
+        return addInternal(ref.name(), initFactory, loadFactory, null, toReactiveRefs(dependencies));
+    }
+
+    /** {@link #addWithParam} keyed by {@link ProcessRef}. */
+    public <P extends Serializable> GraphBuilder addWithParam(
+            ProcessRef ref,
+            SerializableSupplier<? extends ParamProcessInitializer<P>> initFactory,
+            SerializableSupplier<? extends ParamProcessLoader<P>> loadFactory,
+            P param,
+            ProcessRef... dependencies) {
+        Objects.requireNonNull(ref, "ref");
+        return addInternal(ref.name(), initFactory, loadFactory, param, toReactiveRefs(dependencies));
+    }
+
     /**
      * Register {@code Static} routes from the given query classes to the
      * most-recently-added node.
@@ -111,6 +136,12 @@ public final class GraphBuilder {
             typeRouting.put(type, new QueryRoute.Static(name));
         }
         return this;
+    }
+
+    /** {@link #handlesFor(String, Class[])} keyed by {@link ProcessRef}. */
+    public GraphBuilder handlesFor(ProcessRef ref, Class<?>... queryTypes) {
+        Objects.requireNonNull(ref, "ref");
+        return handlesFor(ref.name(), queryTypes);
     }
 
     /**
@@ -167,6 +198,15 @@ public final class GraphBuilder {
         var out = new ArrayList<Dependency>(names.length);
         for (String n : names) {
             out.add(Dependency.reactive(n));
+        }
+        return out;
+    }
+
+    private static List<Dependency> toReactiveRefs(ProcessRef[] refs) {
+        var out = new ArrayList<Dependency>(refs.length);
+        for (ProcessRef r : refs) {
+            Objects.requireNonNull(r, "dependency ref");
+            out.add(Dependency.reactive(r));
         }
         return out;
     }

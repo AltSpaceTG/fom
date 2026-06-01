@@ -45,7 +45,7 @@ any subset without pulling in serializers, DI, or databases you don't use.
 
 | Package | Highlights |
 |---|---|
-| `io.fom` | `Engine`, `EngineConfig`, `Graph`, `GraphBuilder`, `ProcessNode`, `Dependency`, `QueryRoute`, `Sid`, `ScheduledWatcher`, `SnapshotPolicy`, `EngineReport`, `Properties`/`TypedKey`/`Codec`/`Codecs`, `SerializableSupplier`/`SerializableFunction` |
+| `io.fom` | `Engine`, `EngineConfig`, `Graph`, `GraphBuilder`, `ProcessNode`, `ProcessRef`, `Dependency`, `QueryRoute`, `Sid`, `ScheduledWatcher`, `SnapshotPolicy`, `EngineReport`, `Properties`/`TypedKey`/`Codec`/`Codecs`, `SerializableSupplier`/`SerializableFunction` |
 | `io.fom.api` | `Process`, `ProcessInitializer`/`ProcessLoader` (+ `Param…` variants), `QueryableContext`, `ProcessContext`, `Routable`, `EngineObserver`, exceptions |
 | `io.fom.log` | `LogBackend`, the `Log*` event records, `InMemoryLogBackend`, `LocalFileLogBackend`, `LogBackendReport` |
 | `io.fom.serde` | `SerDe`, `JavaSerializableSerDe`, `ObjectInputFilters` |
