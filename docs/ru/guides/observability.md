@@ -3,6 +3,24 @@
 Два дополняющих механизма: push-based SPI **`EngineObserver`** для событий по мере
 их возникновения и pull-based **`introspect()`** для снимка на момент времени.
 
+## Встроенное логирование жизненного цикла
+
+Из коробки — без всякого наблюдателя — движок логирует жизненный цикл каждого
+процесса на slf4j-логгере **`io.fom.fsm.ProcessFSM`** на уровне `INFO`:
+
+```
+[INFO] Process 'Inventory' init started
+[INFO] Process 'Inventory' init completed in 3 ms (sid=2)
+[INFO] Process 'Inventory' load started
+[INFO] Process 'Inventory' load completed in 2 ms — now Serving (sid=2)
+```
+
+Повторы и сбои тоже логируются (повторы init на `INFO`, сбои на `WARN`).
+Подключите любой slf4j-биндинг (Logback, slf4j-simple, …), чтобы это увидеть;
+уровень логгера `io.fom.fsm.ProcessFSM` поднимайте/опускайте по вкусу.
+[`EngineObserver`](#engineobserver) нужен, когда те же события нужны как
+структурированные данные (метрики, спаны), а не строки лога.
+
 ## EngineObserver
 
 Передайте наблюдателя пятым аргументом конструктора `Engine`. Движок вызывает его

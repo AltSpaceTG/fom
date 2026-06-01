@@ -70,7 +70,8 @@ public final class QuickstartExample {
 
         @Override
         public CompletionStage<Map<String, byte[]>> init(QueryableContext ctx) {
-            System.out.println("[Greeter] init — running the one-time work");
+            // The engine logs "init started / completed in N ms" itself (slf4j);
+            // no need to print it from the process. The one-time work goes here.
             Map<String, byte[]> cells = Properties.empty()
                     .put(PREFIX, "Hello")
                     .asRaw();

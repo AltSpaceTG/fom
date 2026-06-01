@@ -87,7 +87,9 @@ public final class MultiProcessExample {
 
         @Override
         public CompletionStage<Map<String, byte[]>> init(QueryableContext ctx) {
-            System.out.println("[Inventory] init");
+            // No manual logging here — the engine logs init/load start + completion
+            // (with timing) on its own slf4j logger; set the example logger to
+            // `info` (src/main/resources/simplelogger.properties) to see it.
             return CompletableFuture.completedFuture(Properties.empty().put(QTY, 42L).asRaw());
         }
 
@@ -105,7 +107,6 @@ public final class MultiProcessExample {
 
         @Override
         public CompletionStage<Map<String, byte[]>> init(QueryableContext ctx) {
-            System.out.println("[Products] init — querying its Inventory dependency");
             // ctx.query addresses a DECLARED dependency. Passing the ProcessRef
             // (not a string) keeps it tied to InventoryInit. Inventory is already
             // Serving because it was spawned first (topological order).

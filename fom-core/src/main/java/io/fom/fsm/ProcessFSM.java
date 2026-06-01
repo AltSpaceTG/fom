@@ -350,9 +350,11 @@ public final class ProcessFSM implements AutoCloseable {
             }
             currentSid = newSid;
             if (initAttemptStartedAt != null) {
+                Duration initDuration = Duration.between(initAttemptStartedAt, Instant.now());
+                log.info("Process '{}' init completed in {} ms (sid={})",
+                        processName, initDuration.toMillis(), newSid.clock());
                 try {
-                    observer.onInitCompleted(processName, newSid,
-                            Duration.between(initAttemptStartedAt, Instant.now()));
+                    observer.onInitCompleted(processName, newSid, initDuration);
                 } catch (Throwable t) {
                     log.warn("FSM[{}] observer.onInitCompleted threw: {}", processName, t.toString());
                 }
@@ -387,9 +389,11 @@ public final class ProcessFSM implements AutoCloseable {
                 return;
             }
             if (loadAttemptStartedAt != null && currentSid != null) {
+                Duration loadDuration = Duration.between(loadAttemptStartedAt, Instant.now());
+                log.info("Process '{}' load completed in {} ms — now Serving (sid={})",
+                        processName, loadDuration.toMillis(), currentSid.clock());
                 try {
-                    observer.onLoadCompleted(processName, currentSid,
-                            Duration.between(loadAttemptStartedAt, Instant.now()));
+                    observer.onLoadCompleted(processName, currentSid, loadDuration);
                 } catch (Throwable t) {
                     log.warn("FSM[{}] observer.onLoadCompleted threw: {}", processName, t.toString());
                 }
@@ -594,6 +598,11 @@ public final class ProcessFSM implements AutoCloseable {
         List<String> deps = dependencyNames();
         long timeoutMs = config().defaultInitTimeout().toMillis();
         Instant attemptStart = Instant.now();
+        if (attempt == 1) {
+            log.info("Process '{}' init started", processName);
+        } else {
+            log.info("Process '{}' init retry (attempt {})", processName, attempt);
+        }
         try {
             observer.onInitStarted(processName, attempt);
         } catch (Throwable t) {
@@ -646,6 +655,11 @@ public final class ProcessFSM implements AutoCloseable {
         List<String> deps = dependencyNames();
         long timeoutMs = config().defaultLoadTimeout().toMillis();
         loadAttemptStartedAt = Instant.now();
+        if (attempt == 1) {
+            log.info("Process '{}' load started", processName);
+        } else {
+            log.info("Process '{}' load retry (attempt {})", processName, attempt);
+        }
         try {
             observer.onLoadStarted(processName, sid, attempt);
         } catch (Throwable t) {

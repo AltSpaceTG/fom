@@ -3,6 +3,24 @@
 Two complementary mechanisms: a push-based **`EngineObserver`** SPI for events
 as they happen, and a pull-based **`introspect()`** for a point-in-time snapshot.
 
+## Built-in lifecycle logging
+
+Out of the box — no observer required — the engine logs each process's lifecycle
+on the **`io.fom.fsm.ProcessFSM`** slf4j logger at `INFO`:
+
+```
+[INFO] Process 'Inventory' init started
+[INFO] Process 'Inventory' init completed in 3 ms (sid=2)
+[INFO] Process 'Inventory' load started
+[INFO] Process 'Inventory' load completed in 2 ms — now Serving (sid=2)
+```
+
+Retries and failures are logged too (init retries at `INFO`, failures at `WARN`).
+Provide any slf4j binding (Logback, slf4j-simple, …) to see it; raise or lower
+the `io.fom.fsm.ProcessFSM` logger to taste. Use an [`EngineObserver`](#engineobserver)
+when you need the same events as structured data (metrics, spans) rather than log
+lines.
+
 ## EngineObserver
 
 Pass an observer as the fifth `Engine` constructor argument. The engine calls
