@@ -1,0 +1,12 @@
+package io.fom.log;
+
+import io.fom.test.LogBackendContractTest;
+
+/** Runs the {@link LogBackendContractTest} against the in-memory implementation. */
+class InMemoryLogBackendTest extends LogBackendContractTest {
+
+    @Override
+    protected LogBackend create() {
+        return new InMemoryLogBackend();
+    }
+}
